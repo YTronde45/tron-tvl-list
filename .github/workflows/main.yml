@@ -1,0 +1,48 @@
+import sys
+import time
+
+# wallet and transfer simulation
+class CryptoWallet:
+    def __init__(self, name, address, balance):
+        self.name = name
+        self.address = address
+        self.balance = balance
+
+    def send(self, amount, destination):
+        if amount > self.balance:
+            raise ValueError(f"Insufficient {self.name} balance.")
+        self.balance -= amount
+        print(f"✅ Simulated sending {amount} {self.name} to {destination}")
+        print(f"Remaining {self.name} balance: {self.balance:.4f}")
+        time.sleep(1)
+
+def main():
+    #  wallet setup
+    wallets = {
+        "Bitcoin": CryptoWallet("Bitcoin", "bc1qjlwxzstfd7mkcnxws739p9xk7z4dq8786frzh7", 0.5),
+        "Ethereum": CryptoWallet("Ethereum", "0x8bcfc12c7D9007dda05770170bd247974Ce63ed7", 2.0),
+        "Litecoin": CryptoWallet("Litecoin", "ltc1qwvjvsm7psl2gpcfdzhxtzu0frs5keqaxh884f0", 10.0),
+        "TRX": CryptoWallet("TRX", "TRsss1nYq5XWRMw4LnDgGoaCqMCVRsq47T", 50000),
+        "Solana": CryptoWallet("Solana", "46SmB8LZTPw9cuVArSFPSdvLaVVy1PzQt9XY97GDzJ5d", 500)
+    }
+
+    print("=== Crypto Transfer Simulator ===")
+    print("Available currencies:", ", ".join(wallets.keys()))
+    choice = input("Select currency to send: ").strip()
+
+    if choice not in wallets:
+        print("Invalid choice.")
+        sys.exit(1)
+
+    amount = float(input(f"Enter amount of {choice} to send: "))
+    destination = input("Enter destination address: ").strip()
+
+    try:
+        wallets[choice].send(amount, destination)
+    except Exception as e:
+        print("❌ Transfer failed:", e)
+
+    print("\nSimulation complete. No real crypto was transferred.")
+
+if __name__ == "__main__":
+    main()
